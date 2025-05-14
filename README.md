@@ -1,0 +1,1 @@
+klon tindera do szkoły
