@@ -1,33 +1,31 @@
-const { v4: uuid } = require('uuid');
-const { users } = require('../storage/inMemoryDb');
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-class User {
-    constructor({ email, passwordHash }) {
-        this.id = uuid();
-        this.email = email;
-        this.passwordHash = passwordHash;
-        this.profile = { photos: [] };
-    }
+const RefreshTokenSchema = new Schema({
+    token: { type: String, required: true },
+    userAgent: String,
+    ip: String,
+    expiresAt: Date,
+    valid: { type: Boolean, default: true }
+});
 
-    static create({ email, passwordHash }) {
-        const user = new User({ email, passwordHash });
-        users.set(user.id, user);
-        return user;
-    }
+const UserSchema = new Schema({
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    passwordHash: {
+        type: String,
+        required: true
+    },
+    tokenVersion: {
+        type: Number,
+        default: 0
+    },
+    refreshTokens: [RefreshTokenSchema]
+}, {
+    timestamps: true
+});
 
-    static findByEmail(email) {
-        return [...users.values()].find(u => u.email === email);
-    }
-
-    static findById(id) {
-        return users.get(id);
-    }
-
-    updateProfile(data) {
-        Object.entries(data).forEach(([key, value]) => {
-            this.profile[key] = value;
-        });
-    }
-}
-
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);

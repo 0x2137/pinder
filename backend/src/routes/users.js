@@ -1,16 +1,24 @@
 const express = require('express');
-const multer = require('multer');
-const auth = require('../middleware/auth');
-const { getProfile, updateProfile, addPhoto } = require('../controllers/userController');
-
-const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
+const auth = require('../middleware/auth');
+const validation = require('../middleware/validation');
+const { changeEmail, resetPassword } = require('../validators/userValidators');
+const userController = require('../controllers/userController');
 
-// @route GET /api/users/me
-router.get('/me', auth, getProfile);
-// @route PUT /api/users/me
-router.put('/me', auth, updateProfile);
-// @route PATCH /api/users/me/photo
-router.patch('/me/photo', auth, upload.single('photo'), addPhoto);
+router.put(
+    '/me/email',
+    auth,
+    changeEmail,
+    validation,
+    userController.changeOwnEmail
+);
+
+router.put(
+    '/me/password',
+    auth,
+    resetPassword,
+    validation,
+    userController.resetOwnPassword
+);
 
 module.exports = router;

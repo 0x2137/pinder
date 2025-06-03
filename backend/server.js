@@ -2,27 +2,49 @@ require('./src/config/env');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const morgan = require('morgan');
-const path = require('path');
+const rateLimit = require('express-rate-limit');
+const cookieParser = require('cookie-parser');
+const { connectDB } = require('./src/config/db');
 
-const authRoutes = require('./src/routes/auth');
-const userRoutes = require('./src/routes/users');
+const authRoutes        = require('./src/routes/auth');
+const profileRoutes     = require('./src/routes/profiles');
+const userRoutes        = require('./src/routes/users');
+const preferencesRoutes = require('./src/routes/preferences');
+const matchRoutes       = require('./src/routes/match');
+const discoveryRoutes   = require('./src/routes/discovery');
+const { sendError }     = require('./src/utils/response');
 
-const app = express();
+async function bootstrap() {
+    const app = express();
 
-app.use(helmet());
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+    app.use(cors());
+    app.use(helmet());
+    app.use(
+        rateLimit({
+            windowMs: 15 * 60 * 1000,
+            max: 100
+        })
+    );
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(cookieParser());
 
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
+    await connectDB();
 
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({ msg: 'Something went wrong' });
-});
+    app.use('/api/auth', authRoutes);
+    app.use('/api/profiles', profileRoutes);
+    app.use('/api/users', userRoutes);
+    app.use('/api/preferences', preferencesRoutes);
+    app.use('/api/match', matchRoutes);
+    app.use('/api/discovery', discoveryRoutes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+    app.use((err, req, res, next) => {
+        console.error(err);
+        return sendError(res, 500, 'Something went wrong');
+    });
+
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+bootstrap();

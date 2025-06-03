@@ -1,19 +1,32 @@
-const User = require('../models/User');
+const userService = require('../services/userService');
+const { sendSuccess, sendError } = require('../utils/response');
 
-exports.getProfile = (req, res) => {
-    const user = User.findById(req.userId);
-    res.json({ profile: user.profile });
-};
+async function changeOwnEmail(req, res, next) {
+    try {
+        const userId = req.userId;
+        const { email } = req.body;
+        const result = await userService.changeEmail(userId, email);
+        return sendSuccess(res, result);
+    } catch (err) {
+        if (err.statusCode) {
+            return sendError(res, err.statusCode, err.message);
+        }
+        next(err);
+    }
+}
 
-exports.updateProfile = (req, res) => {
-    const user = User.findById(req.userId);
-    user.updateProfile(req.body);
-    res.json({ profile: user.profile });
-};
+async function resetOwnPassword(req, res, next) {
+    try {
+        const userId = req.userId;
+        const { oldPassword, newPassword } = req.body;
+        const result = await userService.resetPassword(userId, oldPassword, newPassword);
+        return sendSuccess(res, result);
+    } catch (err) {
+        if (err.statusCode) {
+            return sendError(res, err.statusCode, err.message);
+        }
+        next(err);
+    }
+}
 
-exports.addPhoto = (req, res) => {
-    const user = User.findById(req.userId);
-    const url = `/uploads/${req.file.filename}`;
-    user.profile.photos.push(url);
-    res.status(201).json({ url });
-};
+module.exports = { changeOwnEmail, resetOwnPassword };
