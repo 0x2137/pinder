@@ -38,7 +38,7 @@ const ProfileSchema = new Schema({
             default: 'Point'
         },
         coordinates: {
-            type: [Number], // [lng, lat]
+            type: [Number],
             required: true
         }
     },

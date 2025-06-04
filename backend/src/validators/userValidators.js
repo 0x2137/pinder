@@ -9,8 +9,11 @@ module.exports = {
 
     resetPassword: [
         body('oldPassword')
-            .exists().withMessage('Old password is required')
-            .isLength({ min: 6 }).withMessage('Old password must be at least 6 characters long'),
+            .exists().withMessage('Old password is required'),
+        body('oldPassword')
+            .isLength({ min: 6 })
+            .withMessage('Old password must be at least 6 characters long'),
+
         body('newPassword')
             .isLength({ min: 6 })
             .withMessage('New password must be at least 6 characters long')
