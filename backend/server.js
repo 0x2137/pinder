@@ -14,7 +14,7 @@ const matchRoutes       = require('./src/routes/match');
 const discoveryRoutes   = require('./src/routes/discovery');
 const { sendError }     = require('./src/utils/response');
 
-async function bootstrap() {
+async function createApp() {
     const app = express();
 
     app.use(cors());
@@ -43,8 +43,17 @@ async function bootstrap() {
         return sendError(res, 500, 'Something went wrong');
     });
 
+    return app;
+}
+
+async function bootstrap() {
+    const app = await createApp();
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 
-bootstrap();
+if (require.main === module) {
+    bootstrap().catch(err => console.error(err));
+}
+
+module.exports = { createApp };
