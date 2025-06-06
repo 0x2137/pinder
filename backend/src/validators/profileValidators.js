@@ -24,6 +24,10 @@ module.exports = {
             .optional()
             .isString().withMessage('City must be a string'),
 
+        body('about')
+            .optional()
+            .isLength({ min: 2, max: 250 }).withMessage('About must be 2-250 characters'),
+
         body('interests')
             .optional()
             .isArray().withMessage('Interests must be an array of strings'),

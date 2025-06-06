@@ -30,6 +30,11 @@ const ProfileSchema = new Schema({
         type: String,
         required: true
     },
+    about: {
+        type: String,
+        minlength: 2,
+        maxlength: 250
+    },
     location: {
         type: {
             type: String,

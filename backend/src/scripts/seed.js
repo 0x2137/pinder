@@ -7,8 +7,7 @@ const { connectDB } = require('../config/db');
 const geocoder = require('../utils/geocoder');
 
 const INTERESTS_LIST = [
-    'Sport', 'Movies', 'Books', 'Games', 'Travels',
-    'Cooking', 'Photography', 'Languages', 'Art', 'Gardening'
+    'Sport', 'Movies', 'Books'
 ];
 
 const GENDER_PREFS      = ['male', 'female', 'nonbinary', 'any'];
@@ -38,7 +37,7 @@ async function seed(count = 20) {
         user.refreshTokens.push(refreshTokenData);
         await user.save();
 
-        const city = fakerPL.location.city();
+        const city = 'Warsaw';
         let lat = 0, lng = 0;
         try {
             const coords = await geocoder.geocodeCity(city);
@@ -58,6 +57,7 @@ async function seed(count = 20) {
             age: fakerPL.number.int({ min: 18, max: 60 }),
             gender: fakerPL.helpers.arrayElement(['male', 'female', 'nonbinary']),
             city,
+            about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             location: {
                 type: 'Point',
                 coordinates: [lng, lat]
@@ -65,30 +65,22 @@ async function seed(count = 20) {
             interests: interests,
             havingChildren: fakerPL.helpers.arrayElement(['doesnt_want', 'want', 'has', 'maybe']),
             education: fakerPL.helpers.arrayElement(['HS', 'BS', 'MS', 'PhD', 'Other']),
-            height: fakerPL.number.int({ min: 120, max: 250 }),
+            height: fakerPL.number.int({ min: 175, max: 185 }),
             bodyType: fakerPL.helpers.arrayElement(['slim', 'average', 'athletic', 'curvy', 'fat', 'other']),
             liked: [],
             rejected: []
         });
         await profile.save();
 
-        const ageMin  = fakerPL.number.int({ min: 18, max: 60 });
-        const ageMax  = fakerPL.number.int({ min: ageMin, max: 120 });
-
-        const heightMin = fakerPL.number.int({ min: 120, max: 180 });
-        const heightMax = fakerPL.number.int({ min: heightMin, max: 220 });
-
-        const rangePref = fakerPL.number.int({ min: 10, max: 1000 });
-
         const prefs = new ProfilePreferences({
             userId: user._id,
-            agePref: { min: ageMin, max: ageMax },
-            genderPref: fakerPL.helpers.arrayElement(GENDER_PREFS),
-            havingChildrenPref: fakerPL.helpers.arrayElement(CHILDREN_PREFS),
-            educationPref: fakerPL.helpers.arrayElement(EDUCATION_PREFS),
-            heightPref: { min: heightMin, max: heightMax },
-            bodyTypePref: fakerPL.helpers.arrayElement(BODY_TYPE_PREFS),
-            rangePref: rangePref
+            agePref: { min: 18, max: 99 },
+            genderPref: 'any',
+            havingChildrenPref: 'any',
+            educationPref: 'any',
+            heightPref: { min: 175, max: 185 },
+            bodyTypePref: 'any',
+            rangePref: 100
         });
         await prefs.save();
     }

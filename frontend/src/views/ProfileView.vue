@@ -25,7 +25,7 @@
       </div>
       <div>
         <label class="block">About</label>
-        <textarea v-model="form.about" class="w-full bg-gray-700 border border-gray-600 p-2 rounded"></textarea>
+        <textarea v-model="form.about" maxlength="250" class="w-full bg-gray-700 border border-gray-600 p-2 rounded"></textarea>
       </div>
       <div>
         <label class="block">Children</label>
