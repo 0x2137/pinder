@@ -1,20 +1,20 @@
 <template>
-  <div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow rounded">
-    <h2 class="text-2xl mb-4">Preferences</h2>
+  <div class="max-w-lg mx-auto mt-10 p-6 bg-gray-800 text-gray-100 shadow-lg rounded-lg">
+    <h2 class="text-2xl mb-4 font-semibold">Preferences</h2>
     <form @submit.prevent="onSubmit" class="space-y-4">
       <div class="flex space-x-2">
         <div class="w-1/2">
           <label class="block">Age Min</label>
-          <input v-model.number="form.agePref.min" type="number" min="18" class="w-full border p-2 rounded" />
+          <input v-model.number="form.agePref.min" type="number" min="18" class="w-full bg-gray-700 border border-gray-600 p-2 rounded" />
         </div>
         <div class="w-1/2">
           <label class="block">Age Max</label>
-          <input v-model.number="form.agePref.max" type="number" min="18" class="w-full border p-2 rounded" />
+          <input v-model.number="form.agePref.max" type="number" min="18" class="w-full bg-gray-700 border border-gray-600 p-2 rounded" />
         </div>
       </div>
       <div>
         <label class="block">Gender Preference</label>
-        <select v-model="form.genderPref" class="w-full border p-2 rounded">
+        <select v-model="form.genderPref" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
           <option value="any">Any</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
@@ -23,7 +23,7 @@
       </div>
       <div>
         <label class="block">Children Preference</label>
-        <select v-model="form.childrenPref" class="w-full border p-2 rounded">
+        <select v-model="form.childrenPref" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
           <option value="any">Any</option>
           <option value="doesnt_want">Doesn't want</option>
           <option value="want">Want</option>
@@ -33,7 +33,7 @@
       </div>
       <div>
         <label class="block">Education Preference</label>
-        <select v-model="form.educationPref" class="w-full border p-2 rounded">
+        <select v-model="form.educationPref" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
           <option value="any">Any</option>
           <option value="HS">HS</option>
           <option value="BS">BS</option>
@@ -44,7 +44,7 @@
       </div>
       <div>
         <label class="block">Body Type Preference</label>
-        <select v-model="form.bodyTypePref" class="w-full border p-2 rounded">
+        <select v-model="form.bodyTypePref" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
           <option value="any">Any</option>
           <option value="slim">Slim</option>
           <option value="average">Average</option>
@@ -56,9 +56,9 @@
       </div>
       <div>
         <label class="block">Range (km)</label>
-        <input v-model.number="form.rangePref" type="number" min="10" max="1000" class="w-full border p-2 rounded" />
+        <input v-model.number="form.rangePref" type="number" min="10" max="1000" class="w-full bg-gray-700 border border-gray-600 p-2 rounded" />
       </div>
-      <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Save Preferences</button>
+      <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white p-2 rounded">Save Preferences</button>
     </form>
   </div>
 </template>
@@ -86,6 +86,7 @@ export default {
           Object.assign(form, { ...store.preferences })
         }
       } catch (err) {
+        console.error(err)
       }
     }
     onMounted(loadPreferences)
