@@ -1,5 +1,6 @@
 <template>
   <div class="max-w-lg mx-auto mt-10 p-6 bg-gray-800 text-gray-100 shadow-lg rounded-lg">
+    <img src="https://i.imgur.com/PajiQ14.jpeg" alt="Profile image" class="mx-auto mb-4 w-96 h-96 rounded-lg object-cover" />
     <h2 class="text-2xl mb-4 font-semibold">My Profile</h2>
     <form @submit.prevent="onSubmit" class="space-y-4">
       <div>
