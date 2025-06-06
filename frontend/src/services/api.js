@@ -44,9 +44,12 @@ api.interceptors.response.use(
             api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
             onAccessTokenFetched(newToken)
             isRefreshing = false
+            config._retry = true
             return api(config)
           })
           .catch(err => {
+            isRefreshing = false
+            subscribers = []
             localStorage.removeItem('accessToken')
             window.location.href = '/login'
             return Promise.reject(err)

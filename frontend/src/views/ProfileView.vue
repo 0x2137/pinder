@@ -1,18 +1,18 @@
 <template>
-  <div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow rounded">
-    <h2 class="text-2xl mb-4">My Profile</h2>
+  <div class="max-w-lg mx-auto mt-10 p-6 bg-gray-800 text-gray-100 shadow-lg rounded-lg">
+    <h2 class="text-2xl mb-4 font-semibold">My Profile</h2>
     <form @submit.prevent="onSubmit" class="space-y-4">
       <div>
         <label class="block">Name</label>
-        <input v-model="form.name" type="text" required class="w-full border p-2 rounded" />
+        <input v-model="form.name" type="text" required class="w-full bg-gray-700 border border-gray-600 p-2 rounded" />
       </div>
       <div>
         <label class="block">Age</label>
-        <input v-model.number="form.age" type="number" min="18" required class="w-full border p-2 rounded" />
+        <input v-model.number="form.age" type="number" min="18" required class="w-full bg-gray-700 border border-gray-600 p-2 rounded" />
       </div>
       <div>
         <label class="block">Gender</label>
-        <select v-model="form.gender" required class="w-full border p-2 rounded">
+        <select v-model="form.gender" required class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
           <option value="male">Male</option>
           <option value="female">Female</option>
           <option value="nonbinary">Nonbinary</option>
@@ -20,15 +20,15 @@
       </div>
       <div>
         <label class="block">City</label>
-        <input v-model="form.city" type="text" class="w-full border p-2 rounded" />
+        <input v-model="form.city" type="text" class="w-full bg-gray-700 border border-gray-600 p-2 rounded" />
       </div>
       <div>
         <label class="block">About</label>
-        <textarea v-model="form.about" class="w-full border p-2 rounded"></textarea>
+        <textarea v-model="form.about" class="w-full bg-gray-700 border border-gray-600 p-2 rounded"></textarea>
       </div>
       <div>
         <label class="block">Children</label>
-        <select v-model="form.children" class="w-full border p-2 rounded">
+        <select v-model="form.children" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
           <option value="doesnt_want">Doesn't want</option>
           <option value="want">Want</option>
           <option value="has">Has</option>
@@ -37,7 +37,7 @@
       </div>
       <div>
         <label class="block">Education</label>
-        <select v-model="form.education" class="w-full border p-2 rounded">
+        <select v-model="form.education" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
           <option value="HS">HS</option>
           <option value="BS">BS</option>
           <option value="MS">MS</option>
@@ -47,15 +47,15 @@
       </div>
       <div>
         <label class="block">Interests (comma-separated)</label>
-        <input v-model="interestsText" type="text" class="w-full border p-2 rounded" />
+        <input v-model="interestsText" type="text" class="w-full bg-gray-700 border border-gray-600 p-2 rounded" />
       </div>
       <div>
         <label class="block">Height (cm)</label>
-        <input v-model.number="form.height" type="number" min="120" max="250" class="w-full border p-2 rounded" />
+        <input v-model.number="form.height" type="number" min="120" max="250" class="w-full bg-gray-700 border border-gray-600 p-2 rounded" />
       </div>
       <div>
         <label class="block">Body Type</label>
-        <select v-model="form.bodyType" class="w-full border p-2 rounded">
+        <select v-model="form.bodyType" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
           <option value="slim">Slim</option>
           <option value="average">Average</option>
           <option value="athletic">Athletic</option>
@@ -64,7 +64,7 @@
           <option value="other">Other</option>
         </select>
       </div>
-      <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Save Profile</button>
+      <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white p-2 rounded">Save Profile</button>
     </form>
   </div>
 </template>
@@ -101,9 +101,9 @@ export default {
 
     const onSubmit = async () => {
       form.interests = interestsText.value
-        .split(',')
-        .map(s => s.trim())
-        .filter(s => s)
+          .split(',')
+          .map(s => s.trim())
+          .filter(s => s)
       try {
         await store.updateProfile(form)
         alert('Profile updated')

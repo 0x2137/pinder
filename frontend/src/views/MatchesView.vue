@@ -1,13 +1,13 @@
 <template>
   <div class="max-w-md mx-auto mt-10">
-    <h2 class="text-2xl mb-4">Matches</h2>
+    <h2 class="text-2xl mb-4 font-semibold">Matches</h2>
     <div v-if="matches.length">
-      <div v-for="match in matches" :key="match._id" class="bg-white shadow rounded p-4 mb-4">
-        <router-link :to="`/profile/${match._id}`" class="text-xl font-bold">{{ match.name }}</router-link>
+      <div v-for="match in matches" :key="match._id" class="bg-gray-800 text-gray-100 shadow-lg rounded-lg p-4 mb-4">
+        <router-link :to="`/profile/${match._id}`" class="text-xl font-bold hover:text-pink-400 transition">{{ match.name }}</router-link>
         <p>{{ match.age }} years old, {{ match.city }}</p>
       </div>
     </div>
-    <div v-else class="text-center text-gray-600">No matches yet</div>
+    <div v-else class="text-center text-gray-400">No matches yet</div>
   </div>
 </template>
 
