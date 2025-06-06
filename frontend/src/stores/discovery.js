@@ -22,11 +22,11 @@ export const useDiscoveryStore = defineStore('discovery', {
     },
     async like(id) {
       await api.post('/match/like', { candidateId: id })
-      this.next()
+      this.profiles = this.profiles.filter((p) => p._id !== id)
     },
     async reject(id) {
       await api.post('/match/reject', { candidateId: id })
-      this.next()
+      this.profiles = this.profiles.filter((p) => p._id !== id)
     },
   },
 })
