@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const { connectDB } = require('./src/config/db');
+const seed = require('./src/scripts/seed');
 
 const authRoutes        = require('./src/routes/auth');
 const profileRoutes     = require('./src/routes/profiles');
@@ -17,7 +18,12 @@ const { sendError }     = require('./src/utils/response');
 async function createApp() {
     const app = express();
 
-    app.use(cors());
+    app.use(cors({
+        origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+    }));
     app.use(helmet());
     app.use(
         rateLimit({
@@ -30,6 +36,8 @@ async function createApp() {
     app.use(cookieParser());
 
     await connectDB();
+
+    // await seed(100);
 
     app.use('/api/auth', authRoutes);
     app.use('/api/profiles', profileRoutes);
