@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 const { connectDB } = require('./src/config/db');
 const seed = require('./src/scripts/seed');
 
@@ -34,6 +35,7 @@ async function createApp() {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
+    app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
     await connectDB();
 

@@ -78,6 +78,14 @@ const ProfileSchema = new Schema({
         required: true,
         enum: ['slim', 'average', 'athletic', 'curvy', 'fat', 'other']
     },
+    pictures: {
+        type: [String],
+        default: []
+    },
+    profilePicture: {
+        type: Number,
+        default: 0
+    },
     liked: [
         { type: Schema.Types.ObjectId, ref: 'Profile' }
     ],

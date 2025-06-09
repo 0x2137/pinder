@@ -122,3 +122,66 @@ describe('profileController.updateOwnProfile', () => {
         expect(next).toHaveBeenCalledWith(error);
     });
 });
+
+
+describe('profileController.uploadPicture', () => {
+    let req;
+    let res;
+    let next;
+
+    beforeEach(() => {
+        req = httpMocks.createRequest({
+            method: 'POST',
+            url: '/api/profiles/me/pictures',
+            userId: 'user123'
+        });
+        req.file = { filename: 'a.jpg' };
+        res = httpMocks.createResponse();
+        next = jest.fn();
+    });
+
+    afterEach(() => jest.clearAllMocks());
+
+    it('returns updated profile on success', async () => {
+        const profile = { pictures: ['a.jpg'] };
+        profileService.addPicture.mockResolvedValue(profile);
+
+        await profileController.uploadPicture(req, res, next);
+
+        expect(profileService.addPicture).toHaveBeenCalledWith('user123', 'a.jpg');
+        expect(res.statusCode).toBe(200);
+        expect(res._getJSONData()).toEqual({ status: 'success', data: { profile } });
+        expect(next).not.toHaveBeenCalled();
+    });
+});
+
+describe('profileController.deletePicture', () => {
+    let req;
+    let res;
+    let next;
+
+    beforeEach(() => {
+        req = httpMocks.createRequest({
+            method: 'DELETE',
+            url: '/api/profiles/me/pictures/0',
+            userId: 'user123',
+            params: { index: '0' }
+        });
+        res = httpMocks.createResponse();
+        next = jest.fn();
+    });
+
+    afterEach(() => jest.clearAllMocks());
+
+    it('returns updated profile on success', async () => {
+        const profile = { pictures: [] };
+        profileService.removePicture.mockResolvedValue(profile);
+
+        await profileController.deletePicture(req, res, next);
+
+        expect(profileService.removePicture).toHaveBeenCalledWith('user123', 0);
+        expect(res.statusCode).toBe(200);
+        expect(res._getJSONData()).toEqual({ status: 'success', data: { profile } });
+        expect(next).not.toHaveBeenCalled();
+    });
+});

@@ -51,8 +51,38 @@ async function getProfileById(req, res, next) {
     }
 }
 
+async function uploadPicture(req, res, next) {
+    try {
+        const userId = req.userId;
+        const file = req.file;
+        const profile = await profileService.addPicture(userId, file.filename);
+        return sendSuccess(res, { profile });
+    } catch (err) {
+        if (err.statusCode) {
+            return sendError(res, err.statusCode, err.message);
+        }
+        next(err);
+    }
+}
+
+async function deletePicture(req, res, next) {
+    try {
+        const userId = req.userId;
+        const index = Number(req.params.index);
+        const profile = await profileService.removePicture(userId, index);
+        return sendSuccess(res, { profile });
+    } catch (err) {
+        if (err.statusCode) {
+            return sendError(res, err.statusCode, err.message);
+        }
+        next(err);
+    }
+}
+
 module.exports = {
     getOwnProfile,
     updateOwnProfile,
-    getProfileById
+    getProfileById,
+    uploadPicture,
+    deletePicture
 };

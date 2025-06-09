@@ -54,5 +54,10 @@ module.exports = {
     userIdParam: [
         param('userId')
             .isMongoId().withMessage('userId must be a valid Mongo ID')
+    ],
+    pictureIndexParam: [
+        param('index')
+            .isInt({ min: 0 })
+            .withMessage('index must be a non-negative integer')
     ]
 };

@@ -2,7 +2,8 @@ const express = require('express');
 const profileController = require('../controllers/profileController');
 const auth = require('../middleware/auth');
 const validation = require('../middleware/validation');
-const { createOrUpdateProfile, userIdParam } = require('../validators/profileValidators');
+const upload = require('../middleware/upload');
+const { createOrUpdateProfile, userIdParam, pictureIndexParam } = require('../validators/profileValidators');
 
 const router = express.Router();
 
@@ -15,6 +16,22 @@ router.put(
     validation,
     profileController.updateOwnProfile
 );
+
+router.post(
+    '/me/pictures',
+    auth,
+    upload.single('picture'),
+    profileController.uploadPicture
+);
+
+router.delete(
+    '/me/pictures/:index',
+    auth,
+    pictureIndexParam,
+    validation,
+    profileController.deletePicture
+);
+
 
 router.get(
     '/:userId',
