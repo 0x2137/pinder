@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const { connectDB } = require('./src/config/db');
+const fs = require('fs');
 const seed = require('./src/scripts/seed');
 
 const authRoutes        = require('./src/routes/auth');
@@ -35,7 +36,12 @@ async function createApp() {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
-    app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+    const uploadsPath = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(uploadsPath)) {
+        fs.mkdirSync(uploadsPath, { recursive: true });
+    }
+    app.use('/uploads', express.static(uploadsPath));
 
     await connectDB();
 

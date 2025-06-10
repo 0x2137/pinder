@@ -10,6 +10,8 @@ services:
       - mongodb-data:/data/db
     ports:
       - "27017:27017"
+    networks:
+      - pinder-net
 
   backend:
     build:
@@ -22,7 +24,25 @@ services:
       - db
     ports:
       - "3000:3000"
+    networks:
+      - pinder-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    networks:
+      - pinder-net
 
 volumes:
   mongodb-data:
     name: mongodb-data
+
+networks:
+  pinder-net:
+    driver: bridge
