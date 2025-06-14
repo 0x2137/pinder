@@ -13,46 +13,52 @@
         </div>
       </div>
       <div>
-        <label class="block">Gender Preference</label>
-        <select v-model="form.genderPref" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
-          <option value="any">Any</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="nonbinary">Nonbinary</option>
-        </select>
+        <label class="block mb-1">Gender Preference</label>
+        <div class="flex flex-wrap gap-2 items-center">
+          <label v-for="opt in genderOptions" :key="opt" class="inline-flex items-center">
+            <input type="checkbox" v-model="form.genderPref" :value="opt" class="mr-1" />
+            {{ opt }}
+          </label>
+          <button type="button" @click="toggleAllGender" class="text-sm underline ml-2">
+            {{ allGenderSelected ? 'Unselect all' : 'Select all' }}
+          </button>
+        </div>
       </div>
       <div>
-        <label class="block">Children Preference</label>
-        <select v-model="form.childrenPref" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
-          <option value="any">Any</option>
-          <option value="doesnt_want">Doesn't want</option>
-          <option value="want">Want</option>
-          <option value="has">Has</option>
-          <option value="maybe">Maybe</option>
-        </select>
+        <label class="block mb-1">Children Preference</label>
+        <div class="flex flex-wrap gap-2 items-center">
+          <label v-for="opt in childrenOptions" :key="opt" class="inline-flex items-center">
+            <input type="checkbox" v-model="form.havingChildrenPref" :value="opt" class="mr-1" />
+            {{ opt }}
+          </label>
+          <button type="button" @click="toggleAllChildren" class="text-sm underline ml-2">
+            {{ allChildrenSelected ? 'Unselect all' : 'Select all' }}
+          </button>
+        </div>
       </div>
       <div>
-        <label class="block">Education Preference</label>
-        <select v-model="form.educationPref" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
-          <option value="any">Any</option>
-          <option value="HS">HS</option>
-          <option value="BS">BS</option>
-          <option value="MS">MS</option>
-          <option value="PhD">PhD</option>
-          <option value="Other">Other</option>
-        </select>
+        <label class="block mb-1">Education Preference</label>
+        <div class="flex flex-wrap gap-2 items-center">
+          <label v-for="opt in educationOptions" :key="opt" class="inline-flex items-center">
+            <input type="checkbox" v-model="form.educationPref" :value="opt" class="mr-1" />
+            {{ opt }}
+          </label>
+          <button type="button" @click="toggleAllEducation" class="text-sm underline ml-2">
+            {{ allEducationSelected ? 'Unselect all' : 'Select all' }}
+          </button>
+        </div>
       </div>
       <div>
-        <label class="block">Body Type Preference</label>
-        <select v-model="form.bodyTypePref" class="w-full bg-gray-700 border border-gray-600 p-2 rounded">
-          <option value="any">Any</option>
-          <option value="slim">Slim</option>
-          <option value="average">Average</option>
-          <option value="athletic">Athletic</option>
-          <option value="curvy">Curvy</option>
-          <option value="fat">Fat</option>
-          <option value="other">Other</option>
-        </select>
+        <label class="block mb-1">Body Type Preference</label>
+        <div class="flex flex-wrap gap-2 items-center">
+          <label v-for="opt in bodyTypeOptions" :key="opt" class="inline-flex items-center">
+            <input type="checkbox" v-model="form.bodyTypePref" :value="opt" class="mr-1" />
+            {{ opt }}
+          </label>
+          <button type="button" @click="toggleAllBody" class="text-sm underline ml-2">
+            {{ allBodySelected ? 'Unselect all' : 'Select all' }}
+          </button>
+        </div>
       </div>
       <div>
         <label class="block">Range (km)</label>
@@ -64,20 +70,45 @@
 </template>
 
 <script>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, computed } from 'vue'
 import { usePreferencesStore } from '../stores/preferences'
 
 export default {
   setup() {
     const store = usePreferencesStore()
+    const genderOptions = ['male', 'female', 'nonbinary']
+    const childrenOptions = ['doesnt_want', 'want', 'has', 'maybe']
+    const educationOptions = ['HS', 'BS', 'MS', 'PhD', 'Other']
+    const bodyTypeOptions = ['slim', 'average', 'athletic', 'curvy', 'fat', 'other']
+
     const form = reactive({
       agePref: { min: 18, max: 99 },
-      genderPref: 'any',
-      childrenPref: 'any',
-      educationPref: 'any',
-      bodyTypePref: 'any',
+      genderPref: [...genderOptions],
+      havingChildrenPref: [...childrenOptions],
+      educationPref: [...educationOptions],
+      bodyTypePref: [...bodyTypeOptions],
       rangePref: 50,
     })
+
+    const allGenderSelected = computed(() => genderOptions.every(o => form.genderPref.includes(o)))
+    const toggleAllGender = () => {
+      form.genderPref = allGenderSelected.value ? [] : [...genderOptions]
+    }
+
+    const allChildrenSelected = computed(() => childrenOptions.every(o => form.havingChildrenPref.includes(o)))
+    const toggleAllChildren = () => {
+      form.havingChildrenPref = allChildrenSelected.value ? [] : [...childrenOptions]
+    }
+
+    const allEducationSelected = computed(() => educationOptions.every(o => form.educationPref.includes(o)))
+    const toggleAllEducation = () => {
+      form.educationPref = allEducationSelected.value ? [] : [...educationOptions]
+    }
+
+    const allBodySelected = computed(() => bodyTypeOptions.every(o => form.bodyTypePref.includes(o)))
+    const toggleAllBody = () => {
+      form.bodyTypePref = allBodySelected.value ? [] : [...bodyTypeOptions]
+    }
 
     const loadPreferences = async () => {
       try {
@@ -100,7 +131,22 @@ export default {
       }
     }
 
-    return { form, onSubmit }
+    return {
+      form,
+      genderOptions,
+      childrenOptions,
+      educationOptions,
+      bodyTypeOptions,
+      allGenderSelected,
+      allChildrenSelected,
+      allEducationSelected,
+      allBodySelected,
+      toggleAllGender,
+      toggleAllChildren,
+      toggleAllEducation,
+      toggleAllBody,
+      onSubmit,
+    }
   },
 }
 </script>

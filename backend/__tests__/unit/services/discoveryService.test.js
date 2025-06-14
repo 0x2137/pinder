@@ -46,11 +46,11 @@ describe('discoveryService.findMatchingProfiles', () => {
         const fakePrefs = {
             userId: 'user1',
             agePref: { min: 18, max: 30 },
-            genderPref: 'female',
-            havingChildrenPref: 'any',
-            educationPref: 'any',
+            genderPref: ['female'],
+            havingChildrenPref: ['doesnt_want', 'want', 'has', 'maybe'],
+            educationPref: ['HS', 'BS', 'MS', 'PhD', 'Other'],
             heightPref: { min: 150, max: 200 },
-            bodyTypePref: 'any',
+            bodyTypePref: ['slim', 'average', 'athletic', 'curvy', 'fat', 'other'],
             rangePref: 10,
         };
         Profile.findOne.mockResolvedValueOnce(fakeProfile);

@@ -75,11 +75,11 @@ async function seed(count = 20) {
         const prefs = new ProfilePreferences({
             userId: user._id,
             agePref: { min: 18, max: 99 },
-            genderPref: 'any',
-            havingChildrenPref: 'any',
-            educationPref: 'any',
+            genderPref: ['male', 'female', 'nonbinary'],
+            havingChildrenPref: ['doesnt_want', 'want', 'has', 'maybe'],
+            educationPref: ['HS', 'BS', 'MS', 'PhD', 'Other'],
             heightPref: { min: 175, max: 185 },
-            bodyTypePref: 'any',
+            bodyTypePref: ['slim', 'average', 'athletic', 'curvy', 'fat', 'other'],
             rangePref: 100
         });
         await prefs.save();

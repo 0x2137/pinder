@@ -25,16 +25,16 @@ async function findMatchingProfiles({ userId, radiusInKm, limit, skip }) {
         };
     }
 
-    if (myPrefs.genderPref && myPrefs.genderPref !== 'any') {
-        query.gender = myPrefs.genderPref;
+    if (myPrefs.genderPref && myPrefs.genderPref.length > 0) {
+        query.gender = { $in: myPrefs.genderPref };
     }
 
-    if (myPrefs.havingChildrenPref && myPrefs.havingChildrenPref !== 'any') {
-        query.havingChildren = myPrefs.havingChildrenPref;
+    if (myPrefs.havingChildrenPref && myPrefs.havingChildrenPref.length > 0) {
+        query.havingChildren = { $in: myPrefs.havingChildrenPref };
     }
 
-    if (myPrefs.educationPref && myPrefs.educationPref !== 'any') {
-        query.education = myPrefs.educationPref;
+    if (myPrefs.educationPref && myPrefs.educationPref.length > 0) {
+        query.education = { $in: myPrefs.educationPref };
     }
 
     if (myPrefs.heightPref) {
@@ -44,8 +44,8 @@ async function findMatchingProfiles({ userId, radiusInKm, limit, skip }) {
         };
     }
 
-    if (myPrefs.bodyTypePref && myPrefs.bodyTypePref !== 'any') {
-        query.bodyType = myPrefs.bodyTypePref;
+    if (myPrefs.bodyTypePref && myPrefs.bodyTypePref.length > 0) {
+        query.bodyType = { $in: myPrefs.bodyTypePref };
     }
 
     if (Array.isArray(myProfile.interests) && myProfile.interests.length > 0) {

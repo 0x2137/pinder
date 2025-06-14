@@ -46,7 +46,7 @@ describe('Discovery – integration', () => {
             .set('Authorization', `Bearer ${authToken}`)
             .send({
                 agePref: { min: 25, max: 35 },
-                genderPref: 'male',
+                genderPref: ['male'],
                 rangePref: 100
             });
 
@@ -89,11 +89,6 @@ describe('Discovery – integration', () => {
         });
     });
 
-    afterAll(async () => {
-        if (mongoose.connection.db) await mongoose.connection.db.dropDatabase();
-        await mongoose.disconnect();
-    });
-
     it('returns only nearby & preference-matched profiles', async () => {
         const res = await request(app)
             .get('/api/discovery/near?radius=50')
@@ -104,5 +99,10 @@ describe('Discovery – integration', () => {
         expect(Array.isArray(profiles)).toBe(true);
         expect(profiles.length).toBe(1);
         expect(profiles[0]._id).toBe(profileB._id.toString());
+    });
+
+    afterAll(async () => {
+        if (mongoose.connection.db) await mongoose.connection.db.dropDatabase();
+        await mongoose.disconnect();
     });
 });

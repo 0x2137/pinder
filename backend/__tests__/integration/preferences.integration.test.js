@@ -32,7 +32,7 @@ describe('Preferences – integration', () => {
     it('creates preferences', async () => {
         const body = {
             agePref: { min: 25, max: 35 },
-            genderPref: 'male',
+            genderPref: ['male'],
             rangePref: 50
         };
 
@@ -42,7 +42,7 @@ describe('Preferences – integration', () => {
             .send(body);
 
         expect(res.status).toBe(200);
-        expect(res.body.data.preferences).toMatchObject({ genderPref: 'male' });
+        expect(res.body.data.preferences).toMatchObject({ genderPref: ['male'] });
     });
 
     it('gets preferences', async () => {

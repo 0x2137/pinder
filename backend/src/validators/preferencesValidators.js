@@ -1,9 +1,9 @@
 const { body } = require('express-validator');
 
-const GENDERS_PREF      = ['male', 'female', 'nonbinary', 'any'];
-const CHILDREN_PREF     = ['doesnt_want', 'want', 'has', 'maybe', 'any'];
-const EDUCATION_PREF    = ['HS', 'BS', 'MS', 'PhD', 'Other', 'any'];
-const BODY_TYPES_PREF   = ['slim', 'average', 'athletic', 'curvy', 'fat', 'other', 'any'];
+const GENDERS_PREF      = ['male', 'female', 'nonbinary'];
+const CHILDREN_PREF     = ['doesnt_want', 'want', 'has', 'maybe'];
+const EDUCATION_PREF    = ['HS', 'BS', 'MS', 'PhD', 'Other'];
+const BODY_TYPES_PREF   = ['slim', 'average', 'athletic', 'curvy', 'fat', 'other'];
 
 module.exports = {
     createOrUpdatePreferences: [
@@ -24,15 +24,21 @@ module.exports = {
 
         body('genderPref')
             .optional()
-            .isIn(GENDERS_PREF).withMessage(`Preferred gender must be one of: ${GENDERS_PREF.join(', ')}`),
+            .isArray().withMessage('genderPref must be an array')
+            .custom(arr => arr.every(g => GENDERS_PREF.includes(g)))
+            .withMessage(`Preferred gender must be one of: ${GENDERS_PREF.join(', ')}`),
 
         body('havingChildrenPref')
             .optional()
-            .isIn(CHILDREN_PREF).withMessage(`Preference on having children must be one of: ${CHILDREN_PREF.join(', ')}`),
+            .isArray().withMessage('havingChildrenPref must be an array')
+            .custom(arr => arr.every(v => CHILDREN_PREF.includes(v)))
+            .withMessage(`Preference on having children must be one of: ${CHILDREN_PREF.join(', ')}`),
 
         body('educationPref')
             .optional()
-            .isIn(EDUCATION_PREF).withMessage(`Preferred education must be one of: ${EDUCATION_PREF.join(', ')}`),
+            .isArray().withMessage('educationPref must be an array')
+            .custom(arr => arr.every(v => EDUCATION_PREF.includes(v)))
+            .withMessage(`Preferred education must be one of: ${EDUCATION_PREF.join(', ')}`),
 
         body('heightPref.min')
             .optional()
@@ -51,7 +57,9 @@ module.exports = {
 
         body('bodyTypePref')
             .optional()
-            .isIn(BODY_TYPES_PREF).withMessage(`Preferred body must be one of: ${BODY_TYPES_PREF.join(', ')}`),
+            .isArray().withMessage('bodyTypePref must be an array')
+            .custom(arr => arr.every(v => BODY_TYPES_PREF.includes(v)))
+            .withMessage(`Preferred body must be one of: ${BODY_TYPES_PREF.join(', ')}`),
 
         body('rangePref')
             .optional()

@@ -43,28 +43,36 @@ const ProfilePreferencesSchema = new Schema({
         default: { min: 18, max: 120 }
     },
     genderPref: {
-        type: String,
-        enum: ['male', 'female', 'nonbinary', 'any'],
-        default: 'any'
+        type: [{
+            type: String,
+            enum: ['male', 'female', 'nonbinary']
+        }],
+        default: ['male', 'female', 'nonbinary']
     },
     havingChildrenPref: {
-        type: String,
-        enum: ['doesnt_want', 'want', 'has', 'maybe', 'any'],
-        default: 'any'
+        type: [{
+            type: String,
+            enum: ['doesnt_want', 'want', 'has', 'maybe']
+        }],
+        default: ['doesnt_want', 'want', 'has', 'maybe']
     },
     educationPref: {
-        type: String,
-        enum: ['HS', 'BS', 'MS', 'PhD', 'Other', 'any'],
-        default: 'any'
+        type: [{
+            type: String,
+            enum: ['HS', 'BS', 'MS', 'PhD', 'Other']
+        }],
+        default: ['HS', 'BS', 'MS', 'PhD', 'Other']
     },
     heightPref: {
         type: HeightRangeSchema,
         default: { min: 120, max: 220 }
     },
     bodyTypePref: {
-        type: String,
-        enum: ['slim', 'average', 'athletic', 'curvy', 'fat', 'other', 'any'],
-        default: 'any'
+        type: [{
+            type: String,
+            enum: ['slim', 'average', 'athletic', 'curvy', 'fat', 'other']
+        }],
+        default: ['slim', 'average', 'athletic', 'curvy', 'fat', 'other']
     },
     rangePref: {
         type: Number,
