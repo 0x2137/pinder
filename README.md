@@ -8,6 +8,8 @@ Dating application built with **Node.js**, **Express**, **MongoDB**, **Vue 3**, 
 
 ## Getting Started
 
+Rename /backend/.env.example to .env and run
+
 `podman compose up`
 
 or
