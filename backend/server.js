@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const { connectDB } = require('./src/config/db');
 const fs = require('fs');
-const seed = require('./src/scripts/seed');
 
 const authRoutes        = require('./src/routes/auth');
 const profileRoutes     = require('./src/routes/profiles');
@@ -44,8 +43,6 @@ async function createApp() {
     app.use('/uploads', express.static(uploadsPath));
 
     await connectDB();
-
-    // await seed(100);
 
     app.use('/api/auth', authRoutes);
     app.use('/api/profiles', profileRoutes);

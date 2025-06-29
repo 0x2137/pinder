@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "seed": "node src/scripts/seed.js",
     "start": "node server.js",
+    "start_and_seed": "npm run seed && npm run start",
     "dev": "nodemon server.js",
     "test": "jest --coverage --runInBand --detectOpenHandles"
   },

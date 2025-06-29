@@ -27,6 +27,10 @@ services:
     networks:
       - pinder-net
 
+    # to disable seeding uncomment this line and comment the following line
+    # command: ["npm", "start"]
+    command: ["npm", "run", "start_and_seed"]
+
   frontend:
     build:
       context: ./frontend
